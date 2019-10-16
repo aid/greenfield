@@ -42,9 +42,12 @@
     "express": "^4.17.1",
     "firebase": "^7.2.0",
     "firebaseui": "^4.2.0",
+    "h264-converter": "file:../../h264-converter",
+    "mux.js": "file:../mux.js",
     "prop-types": "^15.7.2",
     "react": "^16.10.2",
     "react-dom": "^16.10.2",
+    "streamedian": "file:../html5_rtsp_player",
     "westfield-runtime-common": "0.2.5",
     "westfield-runtime-server": "0.2.6",
     "ws": "^7.1.2"

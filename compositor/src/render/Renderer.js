@@ -144,24 +144,25 @@ export default class Renderer {
     }
   }
 
-  async ['video/mp4'] (encodedFrame, surface, views) {
-    let renderState = surface.renderState
-    if (!renderState) {
-      renderState = Mp4RenderState.create(this._gl, 'video/mp4; codecs="avc1.420033"') // baseline 5.1
-      surface.renderState = renderState
-    }
-
-    const mp4RenderState = /** @type Mp4RenderState */ renderState
-    const {
-      /** @type {number} */ w: frameWidth,
-      /** @type {number} */ h: frameHeight
-    } = encodedFrame.size
-
+  async ['video/h264'] (encodedFrame, surface, views) {
+    let renderState = /** @type Mp4RenderState */ surface.renderState
     // We update the texture with the fragments as early as possible, this is to avoid gl state mixup with other
     // calls to _draw() while we're in await. If we were to do this call later, this.canvas will have state specifically
     // for our _draw() call, yet because we are in (a late) await, another call might adjust our canvas, which results
     // in bad draws/flashing/flickering/...
-    await mp4RenderState.update(encodedFrame)
+    if (renderState) {
+      await renderState.update(encodedFrame)
+    } else {
+      renderState = await Mp4RenderState.create(this._gl, 'video/mp4; codecs="avc1.420033"') // baseline 5.1
+      surface.renderState = renderState
+      await renderState.update(encodedFrame)
+    }
+    const mp4RenderState = /** @type Mp4RenderState */ renderState
+
+    const {
+      /** @type {number} */ w: frameWidth,
+      /** @type {number} */ h: frameHeight
+    } = encodedFrame.size
 
     if (EncodingOptions.splitAlpha(encodedFrame.encodingOptions)) {
       this._videoAlphaSurfaceShader.use()
@@ -176,9 +177,9 @@ export default class Renderer {
         // TODO we could try to optimize and only shade the fragments of the texture that were updated
         this._videoAlphaSurfaceShader.draw()
         this._videoAlphaSurfaceShader.release()
-        // const imageBitmapStart = Date.now()
+        const imageBitmapStart = Date.now()
         const image = await window.createImageBitmap(this._canvas)
-        // console.log(`|- Create image bitmap took ${Date.now() - imageBitmapStart}ms`)
+        console.log(`|- Create image bitmap took ${Date.now() - imageBitmapStart}ms`)
         views.forEach(view => view.draw(image))
       }
     } else {
@@ -193,7 +194,7 @@ export default class Renderer {
    * @return {Promise<void>}
    * @private
    */
-  async ['video/h264'] (encodedFrame, surface, views) {
+  async ['video/h264old'] (encodedFrame, surface, views) {
     let renderState = surface.renderState
     if (!renderState) {
       renderState = H264RenderState.create(this._gl)

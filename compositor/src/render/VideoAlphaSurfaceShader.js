@@ -124,8 +124,13 @@ class VideoAlphaSurfaceShader {
     this.gl.bindTexture(this.gl.TEXTURE_2D, null)
   }
 
+  use () {
+    this.program.use()
+  }
+
   release () {
-    this.gl.useProgram(null)
+    const gl = this.gl
+    gl.useProgram(null)
   }
 }
 

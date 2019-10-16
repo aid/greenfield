@@ -64,10 +64,10 @@ export default class Texture {
    * @param {!Rect}geo
    * @param {number}stride
    */
-  subImage2dBuffer (buffer, x, y, width, height) {
+  subImage2dBuffer (buffer, x, y) {
     const gl = this.gl
     gl.bindTexture(gl.TEXTURE_2D, this.texture)
-    gl.texSubImage2D(gl.TEXTURE_2D, 0, x, y, width, height, this.format, gl.UNSIGNED_BYTE, buffer)
+    gl.texSubImage2D(gl.TEXTURE_2D, 0, x, y, this.format, gl.UNSIGNED_BYTE, buffer)
     gl.bindTexture(gl.TEXTURE_2D, null)
   }
 
@@ -79,7 +79,7 @@ export default class Texture {
   image2dBuffer (buffer, width, height) {
     const gl = this.gl
     gl.bindTexture(gl.TEXTURE_2D, this.texture)
-    gl.texImage2D(gl.TEXTURE_2D, 0, this.format, width, height, 0, this.format, gl.UNSIGNED_BYTE, buffer)
+    gl.texImage2D(gl.TEXTURE_2D, 0, this.format, this.format, gl.UNSIGNED_BYTE, buffer)
     gl.bindTexture(gl.TEXTURE_2D, null)
   }
 
