@@ -24,7 +24,7 @@ RUN apt-get install -qq \
   libgstreamer-plugins-base1.0-dev \
   gstreamer1.0-plugins-good \
   gstreamer1.0-plugins-ugly && \
-  npm install -g cmake-js
+  npm install --unsafe-perm -g cmake-js
 
 # Add source files
 COPY app-endpoint-server app-endpoint-server
@@ -35,7 +35,7 @@ COPY protocol protocol
 WORKDIR /app/app-endpoint-server
 
 # Build source
-RUN npm install && \
+RUN npm install --unsafe-perm && \
   npm run prepare
 
 # Start server
