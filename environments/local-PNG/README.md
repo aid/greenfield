@@ -1,14 +1,17 @@
 ## About
 
-Demo docker compose configuration. For use on your local machine.
+Demo docker compose configuration.  For use on your local machine. This configuration is different
+than the local-h264 environment in that is is configured to do all encoding using PNG. This might give some performance
+improvement as there is no need for the software based OpenGL implementation found in the local-h264 configuration.
 
 ## Usage
 
-`docker-compose up`
+- `git clone https://github.com/udevbe/greenfield.git`
+- `cd greenfield/environments/local-PNG`
+- `docker-compose up`
 
-This will start 3 containers.
+This will start 2 containers.
 - An app-endpoint-server, has the gtk3-demo-application as launchable application.
-- A dummy X server, used by the gstreamer encoder from the app-endpoint-server container.
 - An nginx server, has ssl termination and uses a self-signed localhost certificate so a secure websocket connection can be set up.
 
 Your browser will, by default, reject the secure websocket connection as it uses a self-signed certificate. 

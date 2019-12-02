@@ -10,22 +10,12 @@ services:
   app-endpoint-server:
     build:
       context: ../../
-      dockerfile: environments/local/containers/app-endpoint-server/Dockerfile
-    volumes:
-      - x11temp:/tmp/.X11-unix
+      dockerfile: environments/local-PNG/containers/app-endpoint-server/Dockerfile
     ports:
       - '8081:8081'
     environment:
-      DISPLAY: ':0'
       XDG_RUNTIME_DIR: '/tmp'
     networks:
       - vpn-localhost
-  xdummy:
-    build:
-      context: containers/xdummy
-    volumes:
-      - x11temp:/tmp/.X11-unix
-volumes:
-  x11temp:
 networks:
   vpn-localhost:
